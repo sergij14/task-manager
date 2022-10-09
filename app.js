@@ -1,7 +1,9 @@
 const express = require("express");
-const mongoose = require("mongoose");
-const tasksRouter = require("./routes/tasksRouter");
 const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+
+const tasksRouter = require("./routes/tasksRouter");
+const connectDB = require("./db/connect");
 
 dotenv.config({ path: "./config.env" });
 const app = express();
@@ -11,22 +13,18 @@ const port = process.env.PORT || 8000;
 app.use(express.json());
 
 //routes
-app.get("/hello", (req, res) => {
-  res.send("task maanger app");
-});
-
 app.use("/api/v1/tasks", tasksRouter);
 
+//connecting to DB/starting server
 const DB_STRING = process.env.DB.replace("<password>", process.env.DB_PASSWORD);
-mongoose
-  .connect(DB_STRING, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
-  .then((data) => {
-    console.log("connected in DB");
-  });
 
-app.listen(port, console.log("server is running on port - " + port));
+const start = async () => {
+  try {
+    await connectDB(DB_STRING);
+    app.listen(port, console.log("server is running on port " + port));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+start();
