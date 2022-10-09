@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const tasksRouter = require("./routes/tasksRouter");
 const connectDB = require("./db/connect");
 
-dotenv.config({ path: "./config.env" });
+dotenv.config({ path: "./.env" });
 const app = express();
 const port = process.env.PORT || 8000;
 
