@@ -23,6 +23,13 @@ app.use(express.json());
 app.use(cors());
 app.options("*", cors());
 
+
+//data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+
+//data sanitization against XSS
+app.use(xss());
+
 //routes
 app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "public", "index.html"));
