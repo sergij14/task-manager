@@ -56,12 +56,44 @@ const getTask = async (req, res) => {
   }
 };
 
-const updateTask = (req, res) => {
-  res.send("update task");
+const updateTask = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const updatedTask = await Task.findByIdAndUpdate(
+      id,
+      { ...req.body },
+      { new: true, runValidators: true }
+    );
+    res.status(200).json({
+      status: "success",
+      data: {
+        task: updatedTask,
+      },
+    });
+  } catch (e) {
+    res.status(400).json({
+      status: "fail",
+      message: e.message,
+    });
+  }
 };
 
-const deleteTask = (req, res) => {
-  res.send("delete task");
+const deleteTask = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await Task.findByIdAndDelete(id);
+    res.status(204).json({
+      status: "success",
+      data: null,
+    });
+  } catch (e) {
+    res.status(400).json({
+      status: "fail",
+      message: e.message,
+    });
+  }
 };
 
 module.exports = {
