@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require('cors');
 
 const tasksRouter = require("./routes/tasksRouter");
 const connectDB = require("./db/connect");
@@ -13,6 +14,10 @@ const port = process.env.PORT || 8000;
 //middleware
 app.use(express.json());
 app.use(express.static("./public"));
+
+//implement CORS
+app.use(cors());
+app.options('*', cors());
 
 //routes
 app.use("/api/v1/tasks", tasksRouter);
