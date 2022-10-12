@@ -2,9 +2,10 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
-const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss-clean');
-const rateLimit = require('express-rate-limit');
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
+const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
 
 const tasksRouter = require("./routes/tasksRouter");
 const connectDB = require("./db/connect");
@@ -26,14 +27,16 @@ app.use(express.json());
 app.use(cors());
 app.options("*", cors());
 
+//set security HTTP headers
+app.use(helmet());
+
 //limit requests from same IP
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,
-  message: 'Too many requests from this IP, please try again in an hour!'
+  message: "Too many requests from this IP, please try again in an hour!",
 });
-app.use('/api', limiter);
-
+app.use("/api", limiter);
 
 //data sanitization against NoSQL query injection
 app.use(mongoSanitize());
