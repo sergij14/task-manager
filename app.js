@@ -25,6 +25,14 @@ app.use(express.json());
 app.use(cors());
 app.options("*", cors());
 
+//limit requests from same IP
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: 'Too many requests from this IP, please try again in an hour!'
+});
+app.use('/api', limiter);
+
 
 //data sanitization against NoSQL query injection
 app.use(mongoSanitize());
