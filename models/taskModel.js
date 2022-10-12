@@ -4,12 +4,14 @@ const mongoose = require("mongoose");
 const taskSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, "must provide name"],
     trim: true,
-    maxLength: 20,
-    unique: true,
+    maxlength: [20, "name can not be more than 20 characters"],
   },
-  completed: { type: Boolean, required: true },
+  completed: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // creating a Model - provides an interface to the database, wrapps a schema
