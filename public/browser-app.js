@@ -9,7 +9,7 @@ const showTasks = async () => {
   try {
     const {
       data: { data },
-    } = await axios.get("http://localhost:8000/api/v1/tasks");
+    } = await axios.get("/api/v1/tasks");
 
     if (data.tasks.length < 1) {
       tasksDOM.innerHTML = '<h5 class="empty-list">No tasks in your list</h5>';
@@ -55,7 +55,7 @@ tasksDOM.addEventListener("click", async (e) => {
     loadingDOM.style.visibility = "visible";
     const id = el.parentElement.dataset.id;
     try {
-      await axios.delete(`http://localhost:8000/api/v1/tasks/${id}`);
+      await axios.delete(`/api/v1/tasks/${id}`);
       showTasks();
     } catch (error) {
       console.log(error);
@@ -71,7 +71,7 @@ formDOM.addEventListener("submit", async (e) => {
   const name = taskInputDOM.value;
 
   try {
-    await axios.post("http://localhost:8000/api/v1/tasks", { name });
+    await axios.post("/api/v1/tasks", { name });
     showTasks();
     taskInputDOM.value = "";
     formAlertDOM.style.display = "block";
