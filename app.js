@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const cors = require('cors');
+const cors = require("cors");
+const path = require("path");
 
 const tasksRouter = require("./routes/tasksRouter");
 const connectDB = require("./db/connect");
@@ -11,15 +12,21 @@ dotenv.config({ path: "./.env" });
 const app = express();
 const port = process.env.PORT || 8000;
 
+__dirname = path.resolve();
+
 //middleware
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use(express.json());
-app.use(express.static("./public"));
 
 //implement CORS
 app.use(cors());
-app.options('*', cors());
+app.options("*", cors());
 
 //routes
+app.get("/", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "public", "index.html"));
+});
 app.use("/api/v1/tasks", tasksRouter);
 
 //error-handling middlewares
