@@ -4,6 +4,7 @@ const cors = require("cors");
 const path = require("path");
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
 
 const tasksRouter = require("./routes/tasksRouter");
 const connectDB = require("./db/connect");
